@@ -49,6 +49,21 @@ For the 参議院 version, keep these fields but adapt `senkyoku` and `todoufuke
 
 Party codes in `color.politicalParty` and the party‐ID tests in `CardManager.isSeitouID` must be updated when new party names are added.
 
+### csv2giin.py 用CSV形式
+公式データを変換する `csv2giin.py` では以下のヘッダー順の CSV を受け付けます。
+
+`id,todoufuken,senkyoku,seitou,title,detail,tubohantei,tubonaiyou,tuboURL,uraganehantei,uraganenaiyou,uraganeURL`
+
+id : 各候補を一意に識別するキー(例: tokyo-yamada)
+`todoufuken` : 都道府県名。比例候補は空欄可
+`senkyoku` : 選挙区名または "比例"
+`seitou` : 政党略称
+`title` : 候補者名
+`detail` : プロフィール等任意情報
+`*_hantei`, `*_naiyou`, `*URL` : 壺・裏金関連情報
+
+カラー情報は `colors.js` によって政党別に自動付与されるため CSV には含めません。
+
 ## Tasks to migrate to 参議院
 1. **Update data structure**
    - Rename the current `小選挙区` category in `giindb.json` to `選挙区`.
@@ -108,12 +123,15 @@ The following table summarizes the main tasks completed so far and their status.
 | **カラーパレット拡張**<br>・新党の `color.politicalParty` を定義 | ▲ 下準備済み | 正式カラー未公表の党（例: 参政党）については仮色。公式発表後に再設定。 |
 | **動作検証**<br>・`index.html` をローカルで読み込み、選挙区／比例代表フィルタとカード表示をチェック | ▲ 手動検証中 | 選挙区フィルタは OK。比例代表で多人数表示時のカード幅自動調整がやや崩れるため、CSS チューニング要。 |
 | **自動テスト** | – | もともと未整備。今後 E2E (Playwright) を導入検討。 |
+現在までにCodexへ依頼していた修正・機能実装はすべて反映済み。
+以降は正式候補データと政党カラーの入力待ち。これらが揃い次第、
+再度JSONを更新し最終調整を行う。
 
 ### Next steps
 1. ~~**UI ラベル残り差し替え** — `header.html` のツールチップ 2 箇所を修正。~~ 完了: `header.html` が存在せず、該当箇所も見当たらないため対応不要と判断。
 2. **カード幅の自動調整バグ修正** — 比例代表を 50 名以上同時表示した際、カードが 3D 空間外にはみ出すため `CardManager.updateLayout()` の行列計算を見直す。
-3. **正式候補データの投入フロー確立** — CSV 仕様確定と `csv2giin.py` ラッパースクリプト作成。
-4. **新党カラー確定後の反映** — 公式サイト発表後に `colors.js` を更新。
+3. **本番CSVデータ取り込み** — 提供された公式候補リストを `csv2giin.py` で JSON 化し `giindb.json` を更新する。
+4. **政党正式カラー反映** — ご提供の色コードに基づき `colors.js` を修正。
 5. **自動テスト基盤の整備 (任意)** — E2E テストで選挙区／比例代表切替とカードクリック動作を確認。
 
 PowerShell でのビルド／ローカル確認手順は以下の通りです。
