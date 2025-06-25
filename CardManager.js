@@ -1327,8 +1327,8 @@ console.log(intersects);
             kokumin: "国民民主党",
             reiwa: "れいわ新選組",
             shamin: "社会民主党",
+            nhk: "NHK党",
             sansei: "参政党",
-            minna: "みんなでつくる党",
             mushozoku: "無所属",
             shoha: "諸派",
             a: "あ",
@@ -1352,10 +1352,10 @@ console.log(intersects);
             kokumin: "#F8BC00",
             reiwa: "#E4027E",
             shamin: "#01A8EC",
+            nhk: "#BD0A1D",
             sansei: "#D85D0F",
-            minna: "#F8EA0D",
             mushozoku: "#000000",
-            shoha: "#000000",            
+            shoha: "#000000",
         };
 
 
@@ -1486,8 +1486,8 @@ console.log(intersects);
         if(strId === "kokumin") return true;
         if(strId === "reiwa") return true;
         if(strId === "shamin") return true;
+        if(strId === "nhk") return true;
         if(strId === "sansei") return true;
-        if(strId === "minna") return true;
         if(strId === "mushozoku") return true;
         if(strId === "shoha") return true;
         return false;
@@ -1601,8 +1601,8 @@ console.log(intersects);
             "kokumin",
             "reiwa",
             "shamin",
+            "nhk",
             "sansei",
-            "minna",
             "mushozoku",
             "shoha"
         ];
