@@ -451,7 +451,7 @@ console.log(intersects);
                     const cardId = intersectedObject.userData.cardId;
                     console.log(this.cardData.getItem(cardId));
 
-                    // 小選挙区カードを押したとき
+                    // 選挙区カードを押したとき
                     if (cardId.includes('第') && cardId.endsWith('区')) {
                         this.animateObjectTransform(intersectedObject, { x: -80, y: 250, z: 90 }, { x: 0, y: 0, z: 0 }, 2000);
                         this.hideAllWaku(intersectedObject);
@@ -1317,7 +1317,7 @@ console.log(intersects);
 
     createWaku() {
         const labels = {
-            shousenkyoku: "小選挙区",
+            shousenkyoku: "選挙区",
             hireiku: "比例区",
             zimin: "自由民主党",
             koumei: "公明党",
@@ -1826,7 +1826,7 @@ console.log(intersects);
             symbolMesh.position.set(0, 0, 0);
             mesh.add(symbolMesh);
 
-            //小選挙区とブロックのときのみ
+            //選挙区とブロックのときのみ
 
             if(this.cardData.getItem(key).title.slice(-1) == "区" || this.cardData.getItem(key).title.slice(-4) == "ブロック"){
                 const detailTexture = this.createTextTexture(this.cardData.getItem(key).detail.slice(0, 13), 400, 120, '28px sans-serif');
