@@ -2,7 +2,7 @@
   "選挙区": {
     "title": "選挙区",
     "childrenInfo": {
-      "cards": ["東京都", "北海道"]
+      "cards": ["東京都", "大阪府"]
     }
   },
   "比例区": {
@@ -16,25 +16,25 @@
     "todoufuken": "東京都",
     "senkyoku": "東京都",
     "childrenInfo": {
-      "cards": ["tokyo-candidate1", "tokyo-candidate2"]
+      "cards": ["tokyo-yamada", "tokyo-suzuki"]
     }
   },
-  "北海道": {
-    "title": "北海道",
-    "todoufuken": "北海道",
-    "senkyoku": "北海道",
+  "大阪府": {
+    "title": "大阪府",
+    "todoufuken": "大阪府",
+    "senkyoku": "大阪府",
     "childrenInfo": {
-      "cards": ["hokkaido-candidate1"]
+      "cards": ["osaka-tanaka"]
     }
   },
   "比例代表": {
     "title": "比例代表",
     "senkyoku": "比例",
     "childrenInfo": {
-      "cards": ["proportional-candidate1", "proportional-candidate2"]
+      "cards": ["prop-yoshida", "prop-saito"]
     }
   },
-  "tokyo-candidate1": {
+  "tokyo-yamada": {
     "todoufuken": "東京都",
     "senkyoku": "東京都",
     "seitou": "自民",
@@ -44,7 +44,7 @@
     "uraganehantei": "",
     "uraganenaiyou": "",
     "uraganeURL": "",
-    "title": "東京候補1",
+    "title": "山田太郎",
     "detail": "",
     "type": "text",
     "color": {
@@ -59,7 +59,7 @@
     },
     "tuboURLarray": ""
   },
-  "tokyo-candidate2": {
+  "tokyo-suzuki": {
     "todoufuken": "東京都",
     "senkyoku": "東京都",
     "seitou": "立憲",
@@ -69,7 +69,7 @@
     "uraganehantei": "",
     "uraganenaiyou": "",
     "uraganeURL": "",
-    "title": "東京候補2",
+    "title": "鈴木花子",
     "detail": "",
     "type": "text",
     "color": {
@@ -84,59 +84,9 @@
     },
     "tuboURLarray": ""
   },
-  "hokkaido-candidate1": {
-    "todoufuken": "北海道",
-    "senkyoku": "北海道",
-    "seitou": "自民",
-    "tubohantei": "",
-    "tubonaiyou": "",
-    "tuboURL": "",
-    "uraganehantei": "",
-    "uraganenaiyou": "",
-    "uraganeURL": "",
-    "title": "北海道候補1",
-    "detail": "",
-    "type": "text",
-    "color": {
-      "politicalParty": "#184589",
-      "theme": "#ff0000",
-      "aiueo": "#007f7f",
-      "map": "#007f7f"
-    },
-    "childrenInfo": {
-      "camera": null,
-      "cards": []
-    },
-    "tuboURLarray": ""
-  },
-  "proportional-candidate1": {
-    "todoufuken": "",
-    "senkyoku": "比例",
-    "seitou": "公明",
-    "tubohantei": "",
-    "tubonaiyou": "",
-    "tuboURL": "",
-    "uraganehantei": "",
-    "uraganenaiyou": "",
-    "uraganeURL": "",
-    "title": "比例候補1",
-    "detail": "",
-    "type": "text",
-    "color": {
-      "politicalParty": "#184589",
-      "theme": "#ff0000",
-      "aiueo": "#007f7f",
-      "map": "#007f7f"
-    },
-    "childrenInfo": {
-      "camera": null,
-      "cards": []
-    },
-    "tuboURLarray": ""
-  },
-  "proportional-candidate2": {
-    "todoufuken": "",
-    "senkyoku": "比例",
+  "osaka-tanaka": {
+    "todoufuken": "大阪府",
+    "senkyoku": "大阪府",
     "seitou": "維新",
     "tubohantei": "",
     "tubonaiyou": "",
@@ -144,7 +94,57 @@
     "uraganehantei": "",
     "uraganenaiyou": "",
     "uraganeURL": "",
-    "title": "比例候補2",
+    "title": "田中一郎",
+    "detail": "",
+    "type": "text",
+    "color": {
+      "politicalParty": "#184589",
+      "theme": "#ff0000",
+      "aiueo": "#007f7f",
+      "map": "#007f7f"
+    },
+    "childrenInfo": {
+      "camera": null,
+      "cards": []
+    },
+    "tuboURLarray": ""
+  },
+  "prop-yoshida": {
+    "todoufuken": "",
+    "senkyoku": "比例",
+    "seitou": "国民",
+    "tubohantei": "",
+    "tubonaiyou": "",
+    "tuboURL": "",
+    "uraganehantei": "",
+    "uraganenaiyou": "",
+    "uraganeURL": "",
+    "title": "吉田次郎",
+    "detail": "",
+    "type": "text",
+    "color": {
+      "politicalParty": "#184589",
+      "theme": "#ff0000",
+      "aiueo": "#007f7f",
+      "map": "#007f7f"
+    },
+    "childrenInfo": {
+      "camera": null,
+      "cards": []
+    },
+    "tuboURLarray": ""
+  },
+  "prop-saito": {
+    "todoufuken": "",
+    "senkyoku": "比例",
+    "seitou": "共産",
+    "tubohantei": "",
+    "tubonaiyou": "",
+    "tuboURL": "",
+    "uraganehantei": "",
+    "uraganenaiyou": "",
+    "uraganeURL": "",
+    "title": "斉藤美咲",
     "detail": "",
     "type": "text",
     "color": {
