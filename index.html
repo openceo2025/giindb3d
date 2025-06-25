@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>統一決別　解散総選挙　国会議員データベース</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="main.css">
+	<style>
+		/* シェアボタンのスタイル */
+		#share-button {
+			position: fixed;
+			top: 10px;
+			right: 10px;
+			width: 60px;
+			height: 60px;
+			cursor: pointer;
+			background: url('./img/share.png') no-repeat center center;
+			background-size: contain;
+			border: none; /* ボタンの青い枠線をなくす */
+			outline: none; /* フォーカス時の枠線を削除 */
+		}
+		/* undoボタンのスタイル */
+		#undo-button {
+			position: fixed;
+			bottom: 10px;
+			left: 10px;
+			width: 60px;
+			height: 60px;
+			cursor: pointer;
+			background: url('./img/undo.png') no-repeat center center;
+			background-size: contain;
+			border: none; /* ボタンの青い枠線をなくす */
+			outline: none; /* フォーカス時の枠線を削除 */
+		}
+	</style>
+
+</head>
+<body>
+
+    <div id="info">統一決別　解散総選挙　国会議員データベース</div>
+    <div id="container"></div>
+    <div id="menu">
+        <button id="changeColorSeitou">政党色にする</button>
+        <button id="changeColorTsubo">壺・裏金 色にする</button>
+        <br /><br />
+        <button id="map"> 地図　</button>
+        <button id="politicalParty"> 政党　</button>
+        <button id="aiueo">あいうえお順</button>
+    </div>
+
+	<!-- シェアボタン -->
+	<button id="share-button"></button>
+
+	<!-- undoボタン -->
+	<button id="undo-button"></button>
+
+    <div id="detaildisplay">
+        <div id="button-container">
+            <!-- リンク付きのボタン10個 -->
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+            <a href="#" class="detail-button">報道リンク</a>
+        </div>
+        <!-- テキストエリア -->
+        <div id="text-area">ここに文字列が表示されます</div>
+        <!-- クローズボタン -->
+        <button id="close-button">閉じる</button>
+    </div>
+
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="https://morusuko.com/giindb/index.html">国会議員DB</a>
+      <a href="https://docs.google.com/spreadsheets/d/18V8Qszce8ZI3q5kQb6kFy6Peya4tEcXk2GMWlvqXf7w/edit?usp=sharing">スプレッドシート</a>
+      <a href="https://github.com/geolonia/japanese-prefectures">日本地図について</a>
+      <a href="./menseki.html">免責事項</a>
+    </div>
+    
+    <span style="font-size:30px;cursor:pointer" class="sideNavOpenBtn" onclick="openNav()">&#9776; </span>
+    <script async src="navigator.js"></script>
+
+    <script src="./libs/pickr.es5.min.js"></script>
+
+    <!-- Import maps polyfill -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "./three/three.module.js",
+                "three/addons/": "./three/jsm/",
+                "CardData": "./CardData.js",
+                "CardManager": "./CardManager.js",
+                "CardCamera": "./cardCamera.js"
+            }
+        }
+    </script>
+
+	<script type="module">
+		import { CardData } from 'CardData';
+		import { CardManager } from 'CardManager';
+
+		// JSONファイルの読み込み
+		fetch('./giindb.json')  
+		.then(response => response.json())
+		.then(data => {
+			const cardData = new CardData(data);
+			const cardManager = new CardManager(cardData);
+			cardManager.giinDB = true;
+			cardManager.init();
+			cardManager.animate();
+
+			// シェアボタンのクリック動作
+			const shareButton = document.getElementById('share-button');
+
+			shareButton.addEventListener('click', async () => {
+				const baseUrl = "https://morusuko.com/onlineservice/giindb/index.html";
+				const currentKey = cardManager.previousKeys.length > 0 ? `?key=${cardManager.previousKeys[cardManager.previousKeys.length -1]}` : "";
+
+				// Web Share APIがサポートされているかチェック
+				if (navigator.share) {
+					try {
+						await navigator.share({
+							title: '統一決別 国会議員データベース',
+							text: '統一決別 国会議員データベース',
+							url: baseUrl + currentKey,
+						});
+						console.log('シェア成功');
+					} catch (error) {
+						console.log('シェアがキャンセルされました: ', error);
+					}
+				} else {
+					alert("Web Share APIがサポートされていません。");
+				}
+			});
+
+
+			// undoボタンのクリック動作
+			const undoButton = document.getElementById('undo-button');
+
+			undoButton.addEventListener('click', (e) => {
+				console.log(cardManager.previousKeys);
+				if (cardManager.previousKeys.length > 1) {
+					const undoKey = cardManager.previousKeys[cardManager.previousKeys.length - 2];
+					cardManager.hideAllWaku();
+					cardManager.hideDetailDisplay();
+					cardManager.hideAllCards();
+					cardManager.handleKeyParam(undoKey);  // 先ほどのメソッドを呼び出す
+
+					// previousKeysの一番最後の要素を削除
+					cardManager.previousKeys.pop();
+					console.log('Undo成功:', undoKey);
+				} else {
+					cardManager.arrangeMode = "map"
+					cardManager.handleButtonClick(e,cardManager.targets.map);
+
+					// previousKeysの一番最後の要素を削除
+					cardManager.previousKeys = [];
+					//alert("Undoできる状態ではありません。");
+				}
+			});
+
+
+		})
+		.catch(error => {
+			console.error('JSONファイルの読み込みに失敗しました:', error);
+			const cardData = new CardData(); 
+			const cardManager = new CardManager(cardData);
+			cardManager.giinDB = true;
+			cardManager.init();
+			cardManager.animate();
+		});
+
+	</script>
+</body>
+</html>

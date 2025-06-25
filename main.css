@@ -1,0 +1,331 @@
+body {
+	margin: 0;
+	/*background-color: #000;*/
+	background-color: #fff;/*もうつかってない。*/
+	color: #fff;
+	font-family: Monospace;
+	font-size: 13px;
+	line-height: 24px;
+	overscroll-behavior: none;
+}
+/*詳細情報表示用*/
+#detaildisplay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;  /* ウィンドウ幅の90% */
+    height: 60vh;  /* ウィンドウ高さの70% */
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
+    box-sizing: border-box;  /* 内側のpaddingを含むレイアウト */
+    border: 2px solid white;  /* 白い枠を追加 */
+}
+
+#button-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);  /* 5列のグリッド */
+    grid-template-rows: repeat(2, 1fr);     /* 2行のグリッド */
+    height: 30%;  /* ボタン部分の高さを全体の30%に設定 */
+}
+
+.detail-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+    border: 1px solid #000;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;  /* ボタンの高さをさらに小さくする */
+    text-align: center;
+    height: 30px;  /* ボタンの高さを半分に */
+    margin: 5px;  /* ボタン間の間隔を設定 */
+}
+
+.detail-button:hover {
+    background-color: #f0f0f0;
+}
+
+#text-area {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    overflow-y: auto;  /* スクロールバーを表示 */
+    word-wrap: break-word;  /* 折り返しを有効に */
+    height: 55%;  /* テキストエリアは残りの高さを使う */
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+#close-button {
+    background-color: white;
+    color: black;
+    border: 1px solid #000;
+    padding: 10px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+#close-button:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+/*kokomade*/
+
+a {
+	color: #ff0;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+button {
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+#info {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	z-index: 1; /* TODO Solve this in HTML */
+}
+
+a, button, input, select {
+	pointer-events: auto;
+}
+
+.lil-gui {
+	z-index: 2 !important; /* TODO Solve this in HTML */
+}
+
+@media all and ( max-width: 640px ) {
+	.lil-gui.root { 
+		right: auto;
+		top: auto;
+		max-height: 50%;
+		max-width: 80%;
+		bottom: 0;
+		left: 0;
+	}
+}
+
+#overlay {
+	position: absolute;
+	font-size: 16px;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: rgba(0,0,0,0.7);
+}
+
+	#overlay button {
+		background: transparent;
+		border: 0;
+		border: 1px solid rgb(255, 255, 255);
+		border-radius: 4px;
+		color: #ffffff;
+		padding: 12px 18px;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+
+#notSupported {
+	width: 50%;
+	margin: auto;
+	background-color: #f00;
+	margin-top: 20px;
+	padding: 10px;
+}
+
+/************以下はhtmlより移設************/
+
+a {
+	color: #8ff;
+}
+
+#menu {
+	position: absolute;
+	bottom: 20px;
+	width: 100%;
+	text-align: center;
+}
+
+.element {
+	width: 432px;
+	height: 699px;
+	box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+	border: 1px solid rgba(127,255,255,0.25);
+	font-family: Helvetica, sans-serif;
+	text-align: center;
+	line-height: normal;
+	cursor: default;
+}
+
+/* Low Detail */
+.element.low-detail {
+    background-color: rgba(0, 127, 127, 0.8);
+    width: calc(432px / 3); 
+    height: calc(432px / 3);   
+    border-radius: 50%;        /* 円形にする */
+}
+
+/* Medium Detail */
+.element.medium-detail {
+    background-color: rgba(0, 127, 127, 0.8);
+	height: calc(80px); /* 高さを元の 1/10 に設定 */
+}
+
+/* High Detail */
+.element.high-detail {
+    background-color: rgba(0, 127, 127, 0.8);
+}
+
+.element:hover {
+	box-shadow: 0px 0px 24px rgba(0,255,255,0.75);
+	border: 5px solid rgba(127,255,255,0.75);
+}
+
+.element.highlight {
+    box-shadow: 0px 0px 24px rgba(255,0,0,0.75); /* 赤い光のエフェクト */
+    border: 20px solid rgba(255,0,0,0.75);         /* 赤い枠線 */
+}
+
+.element .number {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	font-size: 40px;
+	color: rgba(127,255,255,0.75);
+}
+
+.element .title {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	right: 10px;
+	bottom: 10px;
+	font-size: 40px;
+	font-weight: bold;
+	color: rgba(255,255,255,0.75);
+	text-shadow: 0 0 10px rgba(0,255,255,0.95);
+	word-break: break-all;
+	background: transparent; /* 背景を透明に */
+	border: none;             /* 枠線を非表示に */
+}
+
+.element .symbol {
+	position: absolute;
+	top: 60px;
+	left: 10px;
+	right: 10px;
+	bottom: 520px;
+	font-size: 40px;
+	font-weight: bold;
+	color: rgba(255,255,255,0.75);
+	text-shadow: 0 0 10px rgba(0,255,255,0.95);
+	word-break: break-all;
+	background: transparent; /* 背景を透明に */
+	border: none;             /* 枠線を非表示に */
+}
+
+.element .details {
+	position: absolute;
+	top: 200px;
+	bottom: 10px;
+	left: 10px;
+	right: 10px;
+	font-size: 20px;
+	color: rgba(255, 255, 255, 0.979);
+	word-break: break-all;
+	background: transparent; /* 背景を透明に */
+	border: none;             /* 枠線を非表示に */
+}
+
+
+button {
+	color: rgba(117, 255, 255, 0.877);
+	background-color: #000000; /* 背景色を設定して透明にしない */
+	outline: 1px solid rgba(0,255,255,0.75);
+	border: 0px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: rgba(0,255,255,0.5);
+}
+
+button:active {
+	color: #000000;
+	background-color: rgba(0,255,255,0.75);
+}
+
+/************以下はサイドナビゲーション************/
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a, .sidenav span {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover, .sidenav span:hover  {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.sideNavOpenBtn{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 36px;
+}
+
