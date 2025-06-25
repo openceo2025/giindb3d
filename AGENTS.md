@@ -65,3 +65,24 @@ Party codes in `color.politicalParty` and the party‐ID tests in `CardManager.i
    - Prepare a new CSV converted to the JSON format above. The JSON must include: candidate name, party, district or proportional, and the fields for "壺"/"裏金" information. These will be loaded via `giindb.json` just like the current version.
 
 No automated tests are provided. Verify changes by loading `index.html` in a browser and confirming that the map, candidate cards, and filters work with the new data.
+
+## Reference: 2025 House of Councillors election overview
+The 参議院 consists of 248 seats, with half contested every three years. In 2025
+around 124 seats will be up for election. Seats are divided into two systems:
+
+- **District seats (選挙区)**: 148 seats in total. Each prefecture (or combined
+  prefectural district) elects members using single non-transferable vote (SNTV)
+  or first-past-the-post in single-member districts. As of the most recent
+  reform there are 45 districts; Tottori and Shimane are merged, and Tokushima
+  and Kōchi are merged.
+- **Proportional representation (比例代表)**: 100 seats decided by a nationwide
+  open-list system. Voters may write a party name or a candidate name. Seats are
+  allocated to parties using the D'Hondt method, and candidates within each
+  party are ranked by the number of individual votes they receive.
+
+Major parties expected to contest include (subject to change): 自由民主党
+(LDP), 立憲民主党, 公明党, 日本維新の会, 国民民主党, 日本共産党, れいわ新選組,
+社会民主党, NHK党, 参政党, and others.
+
+These details are provided as a reference for updating candidate data and UI
+labels. Confirm official information closer to the election.
