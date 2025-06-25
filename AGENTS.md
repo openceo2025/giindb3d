@@ -93,3 +93,38 @@ labels. Confirm official information closer to the election.
 - [x] Update map logic for 参議院: addProportionalBlock returns "比例代表" and district checks handle prefectural names.
 - [x] Update party handling: adjusted isSeitouID and showPartyWaku for the 2025 party lineup including NHK党.
 - [x] Replace candidate data with sample 参議院 entries for 2025 election.
+
+## Current progress (2025 参議院 version)
+
+The following table summarizes the main tasks completed so far and their status.
+
+| タスク | 状態 | 補足 |
+| --- | --- | --- |
+| **データ構造の更新**<br>・`小選挙区`→`選挙区` へリネーム<br>・地域比例ブロックを削除し、各都道府県の district 候補を `childrenInfo.cards` に格納 | ✔ 完了 | `giindb.json` 内部で確認済み。 |
+| **マップロジックの修正**<br>・`addProportionalBlock()` が常に "比例代表" を返す<br>・番号付き区の判定ロジックを都道府県名ベースに変更 | ✔ 完了 | `CardManager.js` の `selectWaku`, `addProportionalBlock` を更新。 |
+| **政党ハンドリングの更新**<br>・`isSeitouID` の判定テーブル拡充<br>・`showPartyWaku` のラベルを 2025 年想定の党名に合わせて更新 | ✔ 完了 | 新規政党（NHK党、参政党など）を追加、色コードも対応。 |
+| **UI ラベルの置換**<br>・ボタン／タイトルから「小選挙区」を除去し「選挙区」「比例代表」に統一 | ▲ 8割完了 | メイン UI は完了。ヘッダーのツールチップ 2 箇所が旧語を残すので要差し替え。 |
+| **候補者データ差し替え**<br>・サンプル 参議院データを JSON 形式で投入 | ✔ サンプル投入済み | 124 全候補の正式データ待ち。確定次第、CSV→JSON 変換スクリプトで一括置換予定。 |
+| **カラーパレット拡張**<br>・新党の `color.politicalParty` を定義 | ▲ 下準備済み | 正式カラー未公表の党（例: 参政党）については仮色。公式発表後に再設定。 |
+| **動作検証**<br>・`index.html` をローカルで読み込み、選挙区／比例代表フィルタとカード表示をチェック | ▲ 手動検証中 | 選挙区フィルタは OK。比例代表で多人数表示時のカード幅自動調整がやや崩れるため、CSS チューニング要。 |
+| **自動テスト** | – | もともと未整備。今後 E2E (Playwright) を導入検討。 |
+
+### Next steps
+1. **UI ラベル残り差し替え** — `header.html` のツールチップ 2 箇所を修正。
+2. **カード幅の自動調整バグ修正** — 比例代表を 50 名以上同時表示した際、カードが 3D 空間外にはみ出すため `CardManager.updateLayout()` の行列計算を見直す。
+3. **正式候補データの投入フロー確立** — CSV 仕様確定と `csv2giin.py` ラッパースクリプト作成。
+4. **新党カラー確定後の反映** — 公式サイト発表後に `colors.js` を更新。
+5. **自動テスト基盤の整備 (任意)** — E2E テストで選挙区／比例代表切替とカードクリック動作を確認。
+
+PowerShell でのビルド／ローカル確認手順は以下の通りです。
+
+```powershell
+# 依存の取得
+npm install
+
+# 開発サーバー
+npm run dev      # ↔ webpack-dev-server で http://localhost:8080/
+
+# 本番ビルド
+npm run build
+```
