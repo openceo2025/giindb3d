@@ -90,3 +90,4 @@ labels. Confirm official information closer to the election.
 ## Task Progress
 - [x] Rename 小選挙区 to 選挙区 in giindb.json and update UI labels accordingly.
 - [x] Remove regional proportional blocks and list district candidates for each prefecture in giindb.json.
+- [x] Update map logic for 参議院: addProportionalBlock returns "比例代表" and district checks handle prefectural names.
