@@ -92,3 +92,4 @@ labels. Confirm official information closer to the election.
 - [x] Remove regional proportional blocks and list district candidates for each prefecture in giindb.json.
 - [x] Update map logic for 参議院: addProportionalBlock returns "比例代表" and district checks handle prefectural names.
 - [x] Update party handling: adjusted isSeitouID and showPartyWaku for the 2025 party lineup including NHK党.
+- [x] Replace candidate data with sample 参議院 entries for 2025 election.
