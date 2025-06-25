@@ -86,3 +86,6 @@ Major parties expected to contest include (subject to change): 自由民主党
 
 These details are provided as a reference for updating candidate data and UI
 labels. Confirm official information closer to the election.
+
+## Task Progress
+- [x] Rename 小選挙区 to 選挙区 in giindb.json and update UI labels accordingly.
