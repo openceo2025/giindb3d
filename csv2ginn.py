@@ -10,6 +10,12 @@ import argparse
 import sys
 from collections import defaultdict
 
+try:
+    import tkinter as tk
+    from tkinter import filedialog, messagebox
+except Exception:
+    tk = None
+
 # Expected CSV header order
 EXPECTED_HEADERS = [
     "id",
@@ -42,6 +48,38 @@ VALID_PARTIES = [
     "無所属",
     "諸派",
 ]
+
+
+def select_files_gui():
+    """Open GUI dialogs to choose input and output files."""
+    if tk is None:
+        print("tkinter is not available. Please specify files as command line arguments.")
+        return None, None
+    try:
+        root = tk.Tk()
+    except tk.TclError as e:
+        print(f"GUI cannot be started: {e}")
+        return None, None
+    root.withdraw()
+    csv_file = filedialog.askopenfilename(
+        title="Select CSV file",
+        filetypes=[("CSV files", "*.csv"), ("All files", "*.*")],
+    )
+    if not csv_file:
+        messagebox.showerror("csv2ginn", "No CSV file selected")
+        root.destroy()
+        return None, None
+    json_file = filedialog.asksaveasfilename(
+        title="Save JSON file as",
+        defaultextension=".json",
+        filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+    )
+    if not json_file:
+        messagebox.showerror("csv2ginn", "No JSON file path specified")
+        root.destroy()
+        return None, None
+    root.destroy()
+    return csv_file, json_file
 
 
 def validate_header(header):
@@ -142,12 +180,20 @@ def build_json(rows):
 
 def main():
     parser = argparse.ArgumentParser(description="Convert CSV to giin JSON")
-    parser.add_argument("csv_file", help="input CSV file")
-    parser.add_argument("json_file", help="output JSON file")
+    parser.add_argument("csv_file", nargs="?", help="input CSV file")
+    parser.add_argument("json_file", nargs="?", help="output JSON file")
     args = parser.parse_args()
 
+    csv_path = args.csv_file
+    json_path = args.json_file
+    if not csv_path or not json_path:
+        csv_path, json_path = select_files_gui()
+        if not csv_path or not json_path:
+            print("No files selected. Aborting.")
+            return
+
     try:
-        with open(args.csv_file, newline="", encoding="utf-8") as f:
+        with open(csv_path, newline="", encoding="utf-8") as f:
             reader = csv.reader(f)
             try:
                 header = next(reader)
@@ -169,7 +215,7 @@ def main():
                     errors.append((line_num, row_errors))
                 rows.append(record)
     except FileNotFoundError:
-        print(f"ERROR: {args.csv_file} not found")
+        print(f"ERROR: {csv_path} not found")
         sys.exit(1)
 
     for line_num, errs in errors:
@@ -186,9 +232,9 @@ def main():
         sys.exit(1)
 
     data = build_json(rows)
-    with open(args.json_file, "w", encoding="utf-8") as f:
+    with open(json_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"JSON written to {args.json_file}")
+    print(f"JSON written to {json_path}")
 
 
 if __name__ == "__main__":
