@@ -528,7 +528,7 @@ console.log(intersects);
                 //console.log(pId);
                 //console.log(prefectureId);
                 if(pId == prefectureId){
-                    console.log("prefectureIdだと離島があると県全体がかわらない。県名をプロパティに入れて、県名で対象となるメッシュを判定しないといけない");
+                    // TODO: Use prefecture name for mesh lookup when handling islands
                     //pickされたもの
                     // 色のアニメーション
                     
@@ -686,12 +686,16 @@ console.log(intersects);
         if(this.arrangeMode == "changeColorSeitou"){
             Object.keys(this.cardData.items).forEach((key) => {
                 const card = this.cardData.items[key];
-                this.animateColorChange(key, card.color.politicalParty, 2000);                
+                if(card && card.color && card.color.politicalParty){
+                    this.animateColorChange(key, card.color.politicalParty, 2000);
+                }
             });
         }else if(this.arrangeMode == "changeColorTsubo"){
             Object.keys(this.cardData.items).forEach((key) => {
                 const card = this.cardData.items[key];
-                this.animateColorChange(key, card.color.theme, 2000);                
+                if(card && card.color && card.color.theme){
+                    this.animateColorChange(key, card.color.theme, 2000);
+                }
             });
         }
 
@@ -1768,9 +1772,11 @@ console.log(intersects);
         const geometry = new THREE.PlaneGeometry(100, 30);  // 適当な平面ジオメトリを作成
     
         // 透過処理を設定したマテリアルを作成
+        const card = this.cardData.getItem(key);
+        const themeColor = (card && card.color && card.color.theme) ? card.color.theme : '#007f7f';
         const material = new THREE.MeshBasicMaterial({
-            color: this.cardData.getItem(key).color.theme, 
-            side: THREE.DoubleSide, 
+            color: themeColor,
+            side: THREE.DoubleSide,
             transparent: true,  // 透過を有効に
             opacity: 0.5  // 背景は完全に透明に
         });
@@ -2561,14 +2567,15 @@ console.log(intersects);
             }
 
             let targetColor;
+            const cardColor = cardItem && cardItem.color ? cardItem.color.theme : '#007f7f';
             if (this.arrangeMode === "theme") {
-                targetColor = cardItem.color.theme;
+                targetColor = cardColor;
             } else if (this.arrangeMode === "map") {
-                targetColor = cardItem.color.theme;
+                targetColor = cardColor;
             } else if (this.arrangeMode === "aiueo") {
-                targetColor = cardItem.color.theme;
+                targetColor = cardColor;
             } else if (this.arrangeMode === "politicalParty") {
-                targetColor = cardItem.color.theme;
+                targetColor = cardColor;
             }
 
             if (typeof targetColor === 'string' && targetColor.startsWith('#')) {
