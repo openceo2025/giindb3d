@@ -1329,6 +1329,12 @@ console.log(intersects);
             shamin: "社会民主党",
             nhk: "NHK党",
             sansei: "参政党",
+            nippo: "日保",
+            mintsuku: "みんつく",
+            nkoku: "N国",
+            saidou: "再道",
+            mirai: "みらい",
+            nikai: "日改",
             mushozoku: "無所属",
             shoha: "諸派",
             a: "あ",
@@ -1354,6 +1360,12 @@ console.log(intersects);
             shamin: "#01A8EC",
             nhk: "#BD0A1D",
             sansei: "#D85D0F",
+            nippo: "#8A2BE2",
+            mintsuku: "#FF7F50",
+            nkoku: "#A0522D",
+            saidou: "#20B2AA",
+            mirai: "#8F00FF",
+            nikai: "#708090",
             mushozoku: "#000000",
             shoha: "#000000",
         };
@@ -1488,6 +1500,12 @@ console.log(intersects);
         if(strId === "shamin") return true;
         if(strId === "nhk") return true;
         if(strId === "sansei") return true;
+        if(strId === "nippo") return true;
+        if(strId === "mintsuku") return true;
+        if(strId === "nkoku") return true;
+        if(strId === "saidou") return true;
+        if(strId === "mirai") return true;
+        if(strId === "nikai") return true;
         if(strId === "mushozoku") return true;
         if(strId === "shoha") return true;
         return false;
@@ -1603,6 +1621,12 @@ console.log(intersects);
             "shamin",
             "nhk",
             "sansei",
+            "nippo",
+            "mintsuku",
+            "nkoku",
+            "saidou",
+            "mirai",
+            "nikai",
             "mushozoku",
             "shoha"
         ];
