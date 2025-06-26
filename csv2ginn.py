@@ -33,6 +33,87 @@ EXPECTED_HEADERS = [
     "uraganeURL",
 ]
 
+# Optional header variant with 'yomi' for AIUEO grouping
+EXPECTED_HEADERS_YOMI = [
+    "id",
+    "todoufuken",
+    "senkyoku",
+    "seitou",
+    "title",
+    "yomi",
+    "detail",
+    "age",
+    "tubohantei",
+    "tubonaiyou",
+    "tuboURL",
+    "uraganehantei",
+    "uraganenaiyou",
+    "uraganeURL",
+]
+
+# Map short party names in the CSV to JSON keys
+PARTY_KEY_MAP = {
+    "自民": "zimin",
+    "公明": "koumei",
+    "立憲": "rikken",
+    "維新": "ishin",
+    "共産": "kyousan",
+    "国民": "kokumin",
+    "れいわ": "reiwa",
+    "社民": "shamin",
+    "NHK": "nhk",
+    "参政": "sansei",
+    "日保": "nippo",
+    "みんつく": "mintsuku",
+    "N国": "nkoku",
+    "再道": "saidou",
+    "みらい": "mirai",
+    "日改": "nikai",
+    "無所属": "mushozoku",
+    "諸派": "shoha",
+}
+
+# Display names for party groups
+PARTY_FULLNAMES = {
+    "zimin": "自由民主党",
+    "koumei": "公明党",
+    "rikken": "立憲民主党",
+    "ishin": "日本維新の会",
+    "kyousan": "日本共産党",
+    "kokumin": "国民民主党",
+    "reiwa": "れいわ新選組",
+    "shamin": "社会民主党",
+    "nhk": "NHK党",
+    "sansei": "参政党",
+    "nippo": "日保",
+    "mintsuku": "みんつく",
+    "nkoku": "N国",
+    "saidou": "再道",
+    "mirai": "みらい",
+    "nikai": "日改",
+    "mushozoku": "無所属",
+    "shoha": "諸派",
+}
+
+# Prefecture suffix handling
+PREF_MAP = {
+    "北海道": "北海道",
+    "東京": "東京都",
+    "大阪": "大阪府",
+    "京都": "京都府",
+}
+
+
+def normalize_prefecture(name: str) -> str:
+    """Return name with prefecture suffix attached if needed."""
+    if not name:
+        return name
+    if name in PREF_MAP:
+        return PREF_MAP[name]
+    if name[-1] in {"県", "府", "都", "道"}:
+        return name
+    return name + "県"
+
 # Accepted political party names
 VALID_PARTIES = [
     "自民",
@@ -90,22 +171,24 @@ def select_files_gui():
 
 def validate_header(header):
     print("[Header Check]")
-    if header == EXPECTED_HEADERS:
+    if header == EXPECTED_HEADERS or header == EXPECTED_HEADERS_YOMI:
         print("  OK: header matches expected format")
         return True
-    print(f"  ERROR: header mismatch\n  Expected: {EXPECTED_HEADERS}\n  Found:    {header}")
+    print(f"  ERROR: header mismatch\n  Expected: {EXPECTED_HEADERS} or {EXPECTED_HEADERS_YOMI}\n  Found:  {header}")
     return False
 
 
-def validate_row(row, line_num):
+
+def validate_row(row, line_num, header):
     errors = []
-    if len(row) != len(EXPECTED_HEADERS):
-        errors.append(f"column count {len(row)} != {len(EXPECTED_HEADERS)}")
+    if len(row) != len(header):
+        errors.append(f"column count {len(row)} != {len(header)}")
         return errors
-    age = row[EXPECTED_HEADERS.index("age")].strip()
+    idx = {h: i for i, h in enumerate(header)}
+    age = row[idx.get("age")].strip() if "age" in idx else ""
     if age and not age.isdigit():
         errors.append("age is not an integer")
-    party = row[EXPECTED_HEADERS.index("seitou")].strip()
+    party = row[idx.get("seitou")].strip() if "seitou" in idx else ""
     if party not in VALID_PARTIES:
         errors.append(f"unknown party '{party}'")
     return errors
@@ -119,12 +202,15 @@ def build_json(rows):
 
     prefecture_cards = defaultdict(list)
     proportional_cards = []
+    party_cards = defaultdict(list)
+    aiueo_cards = defaultdict(list)
 
     for r in rows:
         rid = r["id"].strip()
-        todoufuken = r["todoufuken"].strip()
+        todoufuken = normalize_prefecture(r["todoufuken"].strip())
         senkyoku = r["senkyoku"].strip()
         party = r["seitou"].strip()
+        party_key = PARTY_KEY_MAP.get(party)
         age = r.get("age", "").strip()
         title = r["title"].strip()
         detail = r["detail"].strip()
@@ -134,11 +220,38 @@ def build_json(rows):
         uraganehantei = r["uraganehantei"].strip()
         uraganenaiyou = r["uraganenaiyou"].strip()
         uraganeURL = r["uraganeURL"].strip()
+        yomi = r.get("yomi", "").strip()
 
         if senkyoku == "比例":
             proportional_cards.append(rid)
         else:
             prefecture_cards[todoufuken].append(rid)
+
+        if party_key:
+            party_cards[party_key].append(rid)
+
+        if yomi:
+            head = yomi[0]
+            if head in "あいうえお":
+                aiueo_cards["あ"].append(rid)
+            elif head in "かきくけこ":
+                aiueo_cards["か"].append(rid)
+            elif head in "さしすせそ":
+                aiueo_cards["さ"].append(rid)
+            elif head in "たちつてと":
+                aiueo_cards["た"].append(rid)
+            elif head in "なにぬねの":
+                aiueo_cards["な"].append(rid)
+            elif head in "はひふへほ":
+                aiueo_cards["は"].append(rid)
+            elif head in "まみむめも":
+                aiueo_cards["ま"].append(rid)
+            elif head in "やゆよ":
+                aiueo_cards["や"].append(rid)
+            elif head in "らりるれろ":
+                aiueo_cards["ら"].append(rid)
+            elif head in "わをん":
+                aiueo_cards["わ"].append(rid)
 
         data[rid] = {
             "todoufuken": todoufuken,
@@ -173,6 +286,20 @@ def build_json(rows):
             "todoufuken": pref,
             "senkyoku": pref,
             "childrenInfo": {"cards": prefecture_cards[pref]},
+        }
+
+    # party groups
+    for key, cards in party_cards.items():
+        data[key] = {
+            "title": PARTY_FULLNAMES.get(key, key),
+            "childrenInfo": {"cards": cards},
+        }
+
+    # AIUEO groups (only if yomi provided)
+    for key, cards in aiueo_cards.items():
+        data[key] = {
+            "title": key,
+            "childrenInfo": {"cards": cards},
         }
 
     # proportional area
@@ -212,11 +339,8 @@ def main():
             for line_num, row in enumerate(reader, start=2):
                 if not row or all(not c.strip() for c in row):
                     continue  # skip empty lines
-                if len(row) != len(header):
-                    errors.append((line_num, [f"column count {len(row)} != {len(header)}"]))
-                    continue
                 record = dict(zip(header, row))
-                row_errors = validate_row(row, line_num)
+                row_errors = validate_row(row, line_num, header)
                 if row_errors:
                     errors.append((line_num, row_errors))
                 rows.append(record)
