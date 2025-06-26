@@ -1386,25 +1386,28 @@ console.log(intersects);
     }
 
     addPrefectureSuffix(input) {
-        // 都道府県名を特別処理するためのリスト
-        const prefectures = {
-            "北海道": "北海道", // 北海道はそのまま
+        // JSON データには都道府県名の表記揺れがあるため
+        // 既存キーを優先的に返し、なければ候補を試す
+        if (this.cardData.getItem(input)) {
+            return input;
+        }
+
+        const special = {
+            "北海道": "北海道",
             "東京": "東京都",
             "大阪": "大阪府",
             "京都": "京都府"
         };
-    
-        // 北海道など特別なケースの場合は、マッチしたものを返す
-        if (prefectures[input]) {
-            return prefectures[input];
+
+        if (special[input] && this.cardData.getItem(special[input])) {
+            return special[input];
         }
-    
-        // 末尾に「県」がなければ「県」を追加
-        if (!input.endsWith("県")) {
-            return input + "県";
+
+        const withKen = input + "県";
+        if (this.cardData.getItem(withKen)) {
+            return withKen;
         }
-    
-        // 既に「県」がついている場合はそのまま返す
+
         return input;
     }
     

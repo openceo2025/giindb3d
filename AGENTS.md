@@ -48,6 +48,11 @@ For the 参議院 version, keep these fields but adapt `senkyoku` and `todoufuke
 - District candidates: `senkyoku` should hold the prefectural district name (e.g. `"東京都"`, `"京都府"`, or combined districts).
 
 Party codes in `color.politicalParty` and the party‐ID tests in `CardManager.isSeitouID` must be updated when new party names are added.
+### Additional JSON groups required
+- **Prefecture entries must match the names used in the SVG map** (e.g. `東京都`, `沖縄県`). If the CSV omits these suffixes, update them or ensure the code resolves both forms. Each prefecture object requires `childrenInfo.cards` listing candidate IDs.
+- **Party groups** such as `zimin` or `rikken` should exist with `childrenInfo.cards` containing that party's candidates.
+- **AIUEO groups** (`あ`, `か`, etc.) should also list candidate IDs grouped by surname reading.
+
 
 ### csv2giin.py 用CSV形式
 公式データを変換する `csv2giin.py` では以下のヘッダー順の CSV を受け付けます。
