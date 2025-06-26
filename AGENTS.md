@@ -50,21 +50,26 @@ For the 参議院 version, keep these fields but adapt `senkyoku` and `todoufuke
 Party codes in `color.politicalParty` and the party‐ID tests in `CardManager.isSeitouID` must be updated when new party names are added.
 ### Additional JSON groups required
 - **Prefecture entries must match the names used in the SVG map** (e.g. `東京都`, `沖縄県`). If the CSV omits these suffixes, update them or ensure the code resolves both forms. Each prefecture object requires `childrenInfo.cards` listing candidate IDs.
+- CSV の `todoufuken` 欄は正式名称（例: `東京都`）を推奨します。省略形でも変換スクリプト側で接尾辞を補完しますが、原データで統一しておくと管理が容易です。
 - **Party groups** such as `zimin` or `rikken` should exist with `childrenInfo.cards` containing that party's candidates.
 - **AIUEO groups** (`あ`, `か`, etc.) should also list candidate IDs grouped by surname reading.
+
+CSV に姓名の読み仮名が無い場合、AIUEO グループを構築できません。`csv2ginn.py` では `title` の直後に `yomi` 列（姓の読みをひらがなで記載）を含むヘッダーを許可しています。公式 CSV を作成する際はこの `yomi` 列を追加してください。
 
 
 ### csv2giin.py 用CSV形式
 公式データを変換する `csv2giin.py` では以下のヘッダー順の CSV を受け付けます。
 
-`id,todoufuken,senkyoku,seitou,title,detail,tubohantei,tubonaiyou,tuboURL,uraganehantei,uraganenaiyou,uraganeURL`
+`id,todoufuken,senkyoku,seitou,title,yomi,detail,age,tubohantei,tubonaiyou,tuboURL,uraganehantei,uraganenaiyou,uraganeURL`
 
 id : 各候補を一意に識別するキー(例: tokyo-yamada)
 `todoufuken` : 都道府県名。比例候補は空欄可
 `senkyoku` : 選挙区名または "比例"
 `seitou` : 政党略称
 `title` : 候補者名
+`yomi` : 候補者姓の読み仮名（AIUEO 分類用）
 `detail` : プロフィール等任意情報
+`age` : 年齢（整数）
 `*_hantei`, `*_naiyou`, `*URL` : 壺・裏金関連情報
 
 カラー情報は `colors.js` によって政党別に自動付与されるため CSV には含めません。
