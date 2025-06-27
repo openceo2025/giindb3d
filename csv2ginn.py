@@ -326,6 +326,7 @@ def build_json(rows):
             "todoufuken": todoufuken,
             "senkyoku": senkyoku,
             "seitou": party,
+            "yomi": yomi,
             "age": age,
             "tubohantei": tubohantei,
             "tubonaiyou": tubonaiyou,
