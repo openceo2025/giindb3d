@@ -1529,19 +1529,16 @@ console.log(intersects);
             } else {
                 console.log(`cardsArray for ${prefectureKey} does not exist.`);
             }
-        }else if(userData.wakuKey === 'hireiku'){            
-            // スペースでスプリットし、最初の要素を使う
+        }else if(userData.wakuKey === 'hireiku'){
             const prefectureKey = this.addProportionalBlock(this.addPrefectureSuffix(this.selectedPrefecture.split(' ')[0]));
             if(prefectureKey === null){console.log("hireiku error");}
-            // cardData.itemsから直接childrenInfo.cardsを取得
             const cardsArray = this.cardData.items[prefectureKey]?.childrenInfo?.cards;
             if (cardsArray && Array.isArray(cardsArray)) {
                 console.log(`cardsArray for ${prefectureKey}:`, cardsArray);
-    
-                // カードキーの配列をshowChildrenCardsに渡す
+
                 this.hideAllCards();  // すべてのカードを非表示に
                 this.previousKeys.push(prefectureKey);
-                this.showChildrenCards(cardsArray,3,70,105,-100,220);  // 子カードを表示する
+                this.showProportionalByParty(cardsArray);  // 党別にカードを配置
             } else {
                 console.log(`cardsArray for ${prefectureKey} does not exist.`);
             }
@@ -1652,6 +1649,65 @@ console.log(intersects);
                 console.error(`Failed to create or retrieve threeObject for cardKey: ${cardKey}`);
             }
         });
+    }
+
+    // 比例代表候補を政党ごとに並べて表示する
+    showProportionalByParty(cardKeys, startX = -100, startY = 220, groupSpacing = 70, columnSpacing = 105) {
+        clearTimeout(this.hideCardsTimeout);
+
+        // 政党ごとにカードIDをグループ化
+        const groups = {};
+        for (const cardKey of cardKeys) {
+            const card = this.cardData.getItem(cardKey);
+            if (!card) continue;
+            let partyKey = this.partyKeyMap[card.seitou] || card.seitou;
+            if (!this.waku[partyKey]) partyKey = 'fumei';
+            if (!groups[partyKey]) groups[partyKey] = [];
+            groups[partyKey].push(cardKey);
+        }
+
+        // 表示順は showPartyWaku と同じ
+        const partyOrder = [
+            "zimin", "koumei", "rikken", "ishin", "kyousan", "kokumin", "reiwa",
+            "shamin", "nhk", "sansei", "nippo", "mintsuku", "nkoku", "saidou",
+            "mirai", "nikai", "nissei", "nichiie", "yamato", "sabetsu", "kakuyu",
+            "genzei", "kunimori", "tafu", "kokuga", "shinsha", "mushozoku",
+            "shoha", "fumei"
+        ];
+
+        this.hideAllWaku();
+
+        let groupIndex = 0;
+        const candidateOffsetY = 40; // 党名カードから候補カードまでの距離
+
+        for (const key of partyOrder) {
+            const members = groups[key];
+            if (!members) continue;
+
+            const baseY = startY - groupIndex * groupSpacing;
+
+            // 党名カードを配置
+            this.waku[key].visible = true;
+            this.transformWaku({ wakuKey: key }, startX, baseY, 210);
+
+            // 候補カードを横一列に配置
+            members.forEach((memberKey, idx) => {
+                let cardObject = this.threeObjects[memberKey];
+                if (!cardObject) {
+                    this.createCard(memberKey);
+                    cardObject = this.threeObjects[memberKey];
+                }
+                const position = {
+                    x: startX + (idx + 1) * columnSpacing,
+                    y: baseY - candidateOffsetY,
+                    z: 100
+                };
+                const rotation = { x: 0, y: 0, z: 0 };
+                this.animateCardTransform(memberKey, { position, rotation }, 2000, true);
+            });
+
+            groupIndex++;
+        }
     }
     
     
