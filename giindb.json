@@ -71,6 +71,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "岩本剛人",
+    "yomi": "いわもとつよひと",
     "detail": "60歳",
     "type": "text",
     "color": {
@@ -97,6 +98,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "高橋はるみ",
+    "yomi": "たかはしはるみ",
     "detail": "71歳",
     "type": "text",
     "color": {
@@ -123,6 +125,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "勝部賢志",
+    "yomi": "かつべけんじ",
     "detail": "65歳",
     "type": "text",
     "color": {
@@ -149,6 +152,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "オカダ美輪子",
+    "yomi": "おかだみわこ",
     "detail": "45歳",
     "type": "text",
     "color": {
@@ -175,6 +179,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "宮内史織",
+    "yomi": "みやうちしおり",
     "detail": "33歳",
     "type": "text",
     "color": {
@@ -201,6 +206,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "鈴木雅貴",
+    "yomi": "すずきまさたか",
     "detail": "33歳",
     "type": "text",
     "color": {
@@ -227,6 +233,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "野村パターソン和孝",
+    "yomi": "のむらぱたーそんかずたか",
     "detail": "40歳",
     "type": "text",
     "color": {
@@ -253,6 +260,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "田中義人",
+    "yomi": "たなかよしひと",
     "detail": "53歳",
     "type": "text",
     "color": {
@@ -279,6 +287,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "小野寺秀",
+    "yomi": "おのでらしゅう",
     "detail": "61歳",
     "type": "text",
     "color": {
@@ -305,6 +314,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "稲原宗能",
+    "yomi": "いなはらむねよし",
     "detail": "35歳",
     "type": "text",
     "color": {
@@ -331,6 +341,7 @@
     "uraganenaiyou": "",
     "uraganeURL": "",
     "title": "高杉保次",
+    "yomi": "たかすぎやすじ",
     "detail": "56歳",
     "type": "text",
     "color": {
@@ -11968,6 +11979,10 @@
         "kakoshima-otsujitomomi"
       ]
     }
+  },
+  "あ": {
+    "title": "あ",
+    "childrenInfo": {"cards": ["hokkaidou-iwamototsuyoshinin"]}
   },
   "比例代表": {
     "title": "比例代表",
