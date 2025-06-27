@@ -1968,7 +1968,19 @@ console.log(intersects);
     
         // 透過処理を設定したマテリアルを作成
         const card = this.cardData.getItem(key);
-        const themeColor = (card && card.color && card.color.theme) ? card.color.theme : '#007f7f';
+        let themeColor = '#007f7f';
+        if (card) {
+            const partyColor = this.getPartyColor(card.seitou);
+            if (partyColor) {
+                if (card.color) {
+                    card.color.theme = partyColor;
+                    card.color.politicalParty = partyColor;
+                }
+                themeColor = partyColor;
+            } else if (card.color && card.color.theme) {
+                themeColor = card.color.theme;
+            }
+        }
         const material = new THREE.MeshBasicMaterial({
             color: themeColor,
             side: THREE.DoubleSide,
