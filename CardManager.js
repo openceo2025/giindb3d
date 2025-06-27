@@ -562,8 +562,8 @@ console.log(intersects);
                         break;  // ループを抜ける
                     }
 
-                    // 壺・裏金議員カードを押したとき
-                    else if (this.cardData.items[cardId].tubohantei !== "" || this.cardData.items[cardId].uraganehantei !== "") {
+                    // 議員カードを押したとき
+                    else {
                         console.log("uraganeok");
                         this.camera.moveToOrigin(this.controls);
                         this.animateObjectTransform(intersectedObject, { x: 0, y: 200, z: 230 }, { x: 0, y: 0, z: 0 }, 2000);
