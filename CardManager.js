@@ -5,6 +5,88 @@ import { CardCamera } from 'CardCamera';
 import { ModalEditor } from './modalEditor.js';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'; // SVGLoaderをインポート
 
+// 政党名の表記ゆれを吸収するマップ
+const PARTY_KEY_MAP = {
+    "自民": "zimin",
+    "自由民主党": "zimin",
+    "公明": "koumei",
+    "立憲": "rikken",
+    "維新": "ishin",
+    "共産": "kyousan",
+    "国民": "kokumin",
+    "れいわ": "reiwa",
+    "社民": "shamin",
+    "社会民主党": "shamin",
+    "NHK": "nhk",
+    "参政": "sansei",
+    "日保": "nippo",
+    "日本保守党": "nippo",
+    "日本保守党（代表者：百田尚樹）": "nippo",
+    "日本保守党（代表者：石濱哲信）": "nippo",
+    "日誠": "nissei",
+    "日本誠真会": "nissei",
+    "日家": "nichiie",
+    "日本の家庭を守る会": "nichiie",
+    "やまと": "yamato",
+    "新党やまと": "yamato",
+    "差別": "sabetsu",
+    "差別撲滅党#平和フリーズ": "sabetsu",
+    "核融": "kakuyu",
+    "核融合党": "kakuyu",
+    "減日": "genzei",
+    "減税日本": "genzei",
+    "くにもり": "kunimori",
+    "新党くにもり": "kunimori",
+    "多夫多妻": "tafu",
+    "多夫多妻党": "tafu",
+    "国ガ": "kokuga",
+    "国政ガバナンスの会": "kokuga",
+    "新社": "shinsha",
+    "新社会党": "shinsha",
+    "みんつく": "mintsuku",
+    "N国": "nkoku",
+    "再道": "saidou",
+    "みらい": "mirai",
+    "日改": "nikai",
+    "無所属": "mushozoku",
+    "諸派": "shoha",
+    "": "fumei",
+    "不明": "fumei",
+};
+
+// 政党IDからカラーコードを取得するマップ
+const PARTY_COLOR_MAP = {
+    zimin: "#3CA324",
+    koumei: "#F55881",
+    rikken: "#184589",
+    ishin: "#6FBA2C",
+    kyousan: "#DB001C",
+    kokumin: "#F8BC00",
+    reiwa: "#E4027E",
+    shamin: "#01A8EC",
+    nhk: "#BD0A1D",
+    sansei: "#D85D0F",
+    nippo: "#8A2BE2",
+    mintsuku: "#FF7F50",
+    nkoku: "#A0522D",
+    saidou: "#20B2AA",
+    mirai: "#8F00FF",
+    nikai: "#708090",
+    nissei: "#FF6347",
+    nichiie: "#4682B4",
+    yamato: "#8B4513",
+    sabetsu: "#2E8B57",
+    kakuyu: "#9400D3",
+    genzei: "#FF69B4",
+    kunimori: "#556B2F",
+    tafu: "#DAA520",
+    kokuga: "#1E90FF",
+    shinsha: "#B22222",
+    mushozoku: "#000000",
+    shoha: "#000000",
+    fumei: "#808080",
+};
+
 export class CardManager {
     constructor(cardData) {
         this.previousKeys = [];
@@ -78,6 +160,10 @@ export class CardManager {
         this.IsHandleStart = false;
         this.previousMousePosition = { x: 0, y: 0 };
         this.bairitsu = 5;
+
+        // 政党カラー取得用マップ
+        this.partyKeyMap = PARTY_KEY_MAP;
+        this.partyColorMap = PARTY_COLOR_MAP;
 
         this.cardData = cardData;
         this.threeObjects = [];
@@ -686,8 +772,13 @@ console.log(intersects);
         if(this.arrangeMode == "changeColorSeitou"){
             Object.keys(this.cardData.items).forEach((key) => {
                 const card = this.cardData.items[key];
-                if(card && card.color && card.color.politicalParty){
-                    this.animateColorChange(key, card.color.politicalParty, 2000);
+                if(!card) return;
+                const partyColor = this.getPartyColor(card.seitou);
+                if(partyColor){
+                    this.animateColorChange(key, partyColor, 2000);
+                    if(card.color){
+                        card.color.politicalParty = partyColor;
+                    }
                 }
             });
         }else if(this.arrangeMode == "changeColorTsubo"){
@@ -1364,37 +1455,7 @@ console.log(intersects);
             wa: "わ",
         };
     
-        const colorArray = {
-            zimin: "#3CA324",
-            koumei: "#F55881",
-            rikken: "#184589",            
-            ishin: "#6FBA2C",
-            kyousan: "#DB001C",                        
-            kokumin: "#F8BC00",
-            reiwa: "#E4027E",
-            shamin: "#01A8EC",
-            nhk: "#BD0A1D",
-            sansei: "#D85D0F",
-            nippo: "#8A2BE2",
-            mintsuku: "#FF7F50",
-            nkoku: "#A0522D",
-            saidou: "#20B2AA",
-            mirai: "#8F00FF",
-            nikai: "#708090",
-            nissei: "#FF6347",
-            nichiie: "#4682B4",
-            yamato: "#8B4513",
-            sabetsu: "#2E8B57",
-            kakuyu: "#9400D3",
-            genzei: "#FF69B4",
-            kunimori: "#556B2F",
-            tafu: "#DAA520",
-            kokuga: "#1E90FF",
-            shinsha: "#B22222",
-            mushozoku: "#000000",
-            shoha: "#000000",
-            fumei: "#808080",
-        };
+        const colorArray = PARTY_COLOR_MAP;
 
 
         for (const key in labels) {  // `const`で宣言する
@@ -1435,6 +1496,11 @@ console.log(intersects);
         }
 
         return input;
+    }
+
+    getPartyColor(name) {
+        const key = this.partyKeyMap[name] || name;
+        return this.partyColorMap[key];
     }
     
 
