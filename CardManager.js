@@ -1697,8 +1697,8 @@ console.log(intersects);
         clearTimeout(this.hideCardsTimeout);
 
         // カードを遠ざけて小さく見せる
-        const wakuZ = -590;      // 党名カードのZ座標
-        const candidateZ = -700; // 候補カードのZ座標
+        const wakuZ = 100;      // 党名カードのZ座標
+        const candidateZ = 100; // 候補カードのZ座標
 
         // 政党ごとにカードIDをグループ化
         const groups = {};
