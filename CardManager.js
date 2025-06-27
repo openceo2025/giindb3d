@@ -94,6 +94,7 @@ const PARTY_COLOR_MAP = {
 const TUBO_COLOR = "#ff0000";      // 統一教会関連
 const URAGANE_COLOR = "#ff31ba";   // 裏金関連
 const BOTH_COLOR = "#800080";      // 両方該当する場合
+const NO_ISSUE_COLOR = "#000000";  // 壺・裏金情報なし
 
 export class CardManager {
     constructor(cardData) {
@@ -1532,7 +1533,7 @@ console.log(intersects);
         if (hasTubo && hasUragane) return BOTH_COLOR;
         if (hasUragane) return URAGANE_COLOR;
         if (hasTubo) return TUBO_COLOR;
-        return this.getPartyColor(card.seitou);
+        return NO_ISSUE_COLOR;
     }
     
 
