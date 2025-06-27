@@ -1556,10 +1556,17 @@ console.log(intersects);
                 console.log(`cardsArray for ${userData.wakuKey} does not exist.`);
             }
         }else if(aiueoKeys){
-            // カードキーの配列をshowChildrenCardsに渡す
-            //this.hideAllCards();  // すべてのカードを非表示に
+            // aiueo のグループがクリックされた場合は、各行の候補カードを展開
+            const candidateKeys = [];
+            for (const key of aiueoKeys) {
+                const cards = this.cardData.items[key]?.childrenInfo?.cards;
+                if (cards && Array.isArray(cards)) {
+                    candidateKeys.push(...cards);
+                }
+            }
+            this.hideAllCards();  // すべてのカードを非表示に
             this.previousKeys.push(aiueoKeys[0]);
-            this.showChildrenCards(aiueoKeys);  // 子カードを表示する
+            this.showChildrenCards(candidateKeys, 3, 70, 105, -100, 230);  // 子カードを表示する
         }
     }
 
