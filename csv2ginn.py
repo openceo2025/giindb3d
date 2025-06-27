@@ -133,6 +133,40 @@ PARTY_FULLNAMES = {
     "fumei": "不明",
 }
 
+# Default color codes for each party
+PARTY_COLORS = {
+    "zimin": "#3CA324",
+    "koumei": "#F55881",
+    "rikken": "#184589",
+    "ishin": "#6FBA2C",
+    "kyousan": "#DB001C",
+    "kokumin": "#F8BC00",
+    "reiwa": "#E4027E",
+    "shamin": "#01A8EC",
+    "nhk": "#000000",
+    "sansei": "#D85D0F",
+    "nippo": "#D3D3D3",
+    "mintsuku": "#F8EA0D",
+    "nkoku": "#000000",
+    "saidou": "#000000",
+    "mirai": "#000000",
+    "nikai": "#000000",
+    "nissei": "#000000",
+    "nichiie": "#000000",
+    "yamato": "#000000",
+    "sabetsu": "#000000",
+    "kakuyu": "#000000",
+    "genzei": "#000000",
+    "kunimori": "#000000",
+    "tafu": "#000000",
+    "kokuga": "#000000",
+    "shinsha": "#000000",
+    "mushozoku": "#DFDFDF",
+    "shoha": "#D3D3D3",
+    "fumei": "#000000",
+    "anshi": "#D3D3D3",
+}
+
 # Prefecture suffix handling
 PREF_MAP = {
     "北海道": "北海道",
@@ -322,6 +356,7 @@ def build_json(rows):
             elif head in "わをん":
                 aiueo_cards["わ"].append(rid)
 
+        party_color = PARTY_COLORS.get(party_key, "#007f7f")
         data[rid] = {
             "todoufuken": todoufuken,
             "senkyoku": senkyoku,
@@ -338,10 +373,10 @@ def build_json(rows):
             "detail": detail,
             "type": "text",
             "color": {
-                "politicalParty": "#184589",
-                "theme": "#ff0000",
-                "aiueo": "#007f7f",
-                "map": "#007f7f",
+                "politicalParty": party_color,
+                "theme": party_color,
+                "aiueo": party_color,
+                "map": party_color,
             },
             "childrenInfo": {"camera": None, "cards": []},
             "tuboURLarray": "",
