@@ -283,6 +283,25 @@ createDetailDisplayObject() {
         this.textArea.innerHTML = text;  // テキストエリアにHTMLとして設定
     }
 
+    // 候補者オブジェクトから表示用の詳細テキストを組み立てる
+    buildCandidateDetailText(card) {
+        if (!card) {
+            return '';
+        }
+        const lines = [];
+        if (card.title) lines.push(`氏名：${card.title}`);
+        if (card.seitou) lines.push(`政党：${card.seitou}`);
+        if (card.age) lines.push(`年齢：${card.age}`);
+        if (card.todoufuken) lines.push(`都道府県：${card.todoufuken}`);
+        if (card.senkyoku) lines.push(`選挙区：${card.senkyoku}`);
+        if (card.detail) lines.push(`詳細：${card.detail}`);
+        if (card.tubohantei) lines.push(`壺判定：${card.tubohantei}`);
+        if (card.tubonaiyou) lines.push(card.tubonaiyou);
+        if (card.uraganehantei) lines.push(`裏金判定：${card.uraganehantei}`);
+        if (card.uraganenaiyou) lines.push(card.uraganenaiyou);
+        return lines.join('<br />');
+    }
+
     init() {
         // URLからGETパラメータを取得
         const urlParams = new URLSearchParams(window.location.search);
@@ -349,12 +368,9 @@ createDetailDisplayObject() {
             //this.previousKeys.push(keyParam);
             this.animateObjectTransform(cardObject.highDetail, {x: 0, y: 200, z: 230}, {x: 0, y: 0, z: 0}, 2000);
 
-            this.updateDetailButtonLinks(this.cardData.items[keyParam].tuboURLarray);
-            if (this.cardData.items[keyParam].uraganenaiyou !== "") {
-                this.changeDetailText("裏金金額：" + this.cardData.items[keyParam].uraganenaiyou + "<br />" + this.cardData.items[keyParam].tubonaiyou);
-            } else {
-                this.changeDetailText(this.cardData.items[keyParam].tubonaiyou);
-            }
+            const info = this.cardData.items[keyParam];
+            this.updateDetailButtonLinks(info.tuboURLarray);
+            this.changeDetailText(this.buildCandidateDetailText(info));
             this.showDetailDisplay();
         }
     }
@@ -570,14 +586,9 @@ console.log(intersects);
                         this.previousKeys.push(cardId);
                         this.hideAllWaku();
                         this.hideAllCards(cardId);
-                        this.updateDetailButtonLinks(this.cardData.items[cardId].tuboURLarray);
-
-                        if (this.cardData.items[cardId].uraganenaiyou !== "") {
-                            this.changeDetailText("裏金金額：" + this.cardData.items[cardId].uraganenaiyou + "<br />" + this.cardData.items[cardId].tubonaiyou);
-                        } else {
-                            this.changeDetailText(this.cardData.items[cardId].tubonaiyou);
-                        }
-
+                        const cardInfo = this.cardData.items[cardId];
+                        this.updateDetailButtonLinks(cardInfo.tuboURLarray);
+                        this.changeDetailText(this.buildCandidateDetailText(cardInfo));
                         this.showDetailDisplay();
                         isProcessed = true;  // フラグを立てる
                         break;  // ループを抜ける
