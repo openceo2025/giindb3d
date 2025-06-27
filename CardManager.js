@@ -1339,8 +1339,19 @@ console.log(intersects);
             saidou: "再道",
             mirai: "みらい",
             nikai: "日改",
+            nissei: "日本誠真会",
+            nichiie: "日本の家庭を守る会",
+            yamato: "新党やまと",
+            sabetsu: "差別撲滅党#平和フリーズ",
+            kakuyu: "核融合党",
+            genzei: "減税日本",
+            kunimori: "新党くにもり",
+            tafu: "多夫多妻党",
+            kokuga: "国政ガバナンスの会",
+            shinsha: "新社会党",
             mushozoku: "無所属",
             shoha: "諸派",
+            fumei: "不明",
             a: "あ",
             ka: "か",
             sa: "さ",
@@ -1370,8 +1381,19 @@ console.log(intersects);
             saidou: "#20B2AA",
             mirai: "#8F00FF",
             nikai: "#708090",
+            nissei: "#FF6347",
+            nichiie: "#4682B4",
+            yamato: "#8B4513",
+            sabetsu: "#2E8B57",
+            kakuyu: "#9400D3",
+            genzei: "#FF69B4",
+            kunimori: "#556B2F",
+            tafu: "#DAA520",
+            kokuga: "#1E90FF",
+            shinsha: "#B22222",
             mushozoku: "#000000",
             shoha: "#000000",
+            fumei: "#808080",
         };
 
 
@@ -1513,8 +1535,19 @@ console.log(intersects);
         if(strId === "saidou") return true;
         if(strId === "mirai") return true;
         if(strId === "nikai") return true;
+        if(strId === "nissei") return true;
+        if(strId === "nichiie") return true;
+        if(strId === "yamato") return true;
+        if(strId === "sabetsu") return true;
+        if(strId === "kakuyu") return true;
+        if(strId === "genzei") return true;
+        if(strId === "kunimori") return true;
+        if(strId === "tafu") return true;
+        if(strId === "kokuga") return true;
+        if(strId === "shinsha") return true;
         if(strId === "mushozoku") return true;
         if(strId === "shoha") return true;
+        if(strId === "fumei") return true;
         return false;
     }
     
@@ -1634,8 +1667,19 @@ console.log(intersects);
             "saidou",
             "mirai",
             "nikai",
+            "nissei",
+            "nichiie",
+            "yamato",
+            "sabetsu",
+            "kakuyu",
+            "genzei",
+            "kunimori",
+            "tafu",
+            "kokuga",
+            "shinsha",
             "mushozoku",
-            "shoha"
+            "shoha",
+            "fumei"
         ];
     
         let index = 0;

@@ -54,6 +54,7 @@ EXPECTED_HEADERS_YOMI = [
 # Map short party names in the CSV to JSON keys
 PARTY_KEY_MAP = {
     "自民": "zimin",
+    "自由民主党": "zimin",
     "公明": "koumei",
     "立憲": "rikken",
     "維新": "ishin",
@@ -61,9 +62,33 @@ PARTY_KEY_MAP = {
     "国民": "kokumin",
     "れいわ": "reiwa",
     "社民": "shamin",
+    "社会民主党": "shamin",
     "NHK": "nhk",
     "参政": "sansei",
     "日保": "nippo",
+    "日本保守党": "nippo",
+    "日本保守党（代表者：百田尚樹）": "nippo",
+    "日本保守党（代表者：石濱哲信）": "nippo",
+    "日誠": "nissei",
+    "日本誠真会": "nissei",
+    "日家": "nichiie",
+    "日本の家庭を守る会": "nichiie",
+    "やまと": "yamato",
+    "新党やまと": "yamato",
+    "差別": "sabetsu",
+    "差別撲滅党#平和フリーズ": "sabetsu",
+    "核融": "kakuyu",
+    "核融合党": "kakuyu",
+    "減日": "genzei",
+    "減税日本": "genzei",
+    "くにもり": "kunimori",
+    "新党くにもり": "kunimori",
+    "多夫多妻": "tafu",
+    "多夫多妻党": "tafu",
+    "国ガ": "kokuga",
+    "国政ガバナンスの会": "kokuga",
+    "新社": "shinsha",
+    "新社会党": "shinsha",
     "みんつく": "mintsuku",
     "N国": "nkoku",
     "再道": "saidou",
@@ -71,6 +96,8 @@ PARTY_KEY_MAP = {
     "日改": "nikai",
     "無所属": "mushozoku",
     "諸派": "shoha",
+    "": "fumei",
+    "不明": "fumei",
 }
 
 # Display names for party groups
@@ -91,8 +118,19 @@ PARTY_FULLNAMES = {
     "saidou": "再道",
     "mirai": "みらい",
     "nikai": "日改",
+    "nissei": "日本誠真会",
+    "nichiie": "日本の家庭を守る会",
+    "yamato": "新党やまと",
+    "sabetsu": "差別撲滅党#平和フリーズ",
+    "kakuyu": "核融合党",
+    "genzei": "減税日本",
+    "kunimori": "新党くにもり",
+    "tafu": "多夫多妻党",
+    "kokuga": "国政ガバナンスの会",
+    "shinsha": "新社会党",
     "mushozoku": "無所属",
     "shoha": "諸派",
+    "fumei": "不明",
 }
 
 # Prefecture suffix handling
@@ -117,6 +155,7 @@ def normalize_prefecture(name: str) -> str:
 # Accepted political party names
 VALID_PARTIES = [
     "自民",
+    "自由民主党",
     "公明",
     "立憲",
     "維新",
@@ -124,9 +163,33 @@ VALID_PARTIES = [
     "国民",
     "れいわ",
     "社民",
+    "社会民主党",
     "NHK",
     "参政",
     "日保",
+    "日本保守党",
+    "日本保守党（代表者：百田尚樹）",
+    "日本保守党（代表者：石濱哲信）",
+    "日誠",
+    "日本誠真会",
+    "日家",
+    "日本の家庭を守る会",
+    "やまと",
+    "新党やまと",
+    "差別",
+    "差別撲滅党#平和フリーズ",
+    "核融",
+    "核融合党",
+    "減日",
+    "減税日本",
+    "くにもり",
+    "新党くにもり",
+    "多夫多妻",
+    "多夫多妻党",
+    "国ガ",
+    "国政ガバナンスの会",
+    "新社",
+    "新社会党",
     "みんつく",
     "N国",
     "再道",
@@ -134,6 +197,8 @@ VALID_PARTIES = [
     "日改",
     "無所属",
     "諸派",
+    "",
+    "不明",
 ]
 
 
@@ -189,6 +254,8 @@ def validate_row(row, line_num, header):
     if age and not age.isdigit():
         errors.append("age is not an integer")
     party = row[idx.get("seitou")].strip() if "seitou" in idx else ""
+    if not party:
+        party = "不明"
     if party not in VALID_PARTIES:
         errors.append(f"unknown party '{party}'")
     return errors
@@ -210,6 +277,8 @@ def build_json(rows):
         todoufuken = normalize_prefecture(r["todoufuken"].strip())
         senkyoku = r["senkyoku"].strip()
         party = r["seitou"].strip()
+        if not party:
+            party = "不明"
         party_key = PARTY_KEY_MAP.get(party)
         age = r.get("age", "").strip()
         title = r["title"].strip()
