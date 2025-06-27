@@ -1622,6 +1622,10 @@ console.log(intersects);
         clearTimeout(this.hideCardsTimeout);
     
         cardKeys.forEach((cardKey, index) => {
+            if (!this.cardData.getItem(cardKey)) {
+                console.warn(`Card data for ${cardKey} not found.`);
+                return;
+            }
             const row = Math.floor(index / columnCount);  // 行の計算
             const col = index % columnCount;  // 列の計算
     
@@ -1883,6 +1887,11 @@ console.log(intersects);
 
 
     createCard(key) {
+        if (!this.cardData.getItem(key)) {
+            console.warn(`Card data for ${key} not found. Skipping card creation.`);
+            return;
+        }
+
         // ランダムな座標を生成
         const position = {
             x: Math.random() * 4000 - 2000,
@@ -1922,18 +1931,24 @@ console.log(intersects);
 
     //各詳細レベルのオブジェクトを作成する
     createDetailObject(key, detailLevel, position, offset) {
-        if(this.cardData.getItem(key).type === 'text'){
+        const item = this.cardData.getItem(key);
+        if (!item) {
+            console.warn(`Card data for ${key} not found.`);
+            return new THREE.Object3D();
+        }
+
+        if(item.type === 'text'){
             return this.createDetailObjectText(key, detailLevel, position, offset);
-        }else if(this.cardData.getItem(key).type === 'folder'){
+        }else if(item.type === 'folder'){
             return this.createDetailObjectFolder(key, detailLevel, position, offset);
-        }else if(this.cardData.getItem(key).type === 'img'){
+        }else if(item.type === 'img'){
             return this.createDetailObjectImg(key, detailLevel, position, offset);
-        }else if(this.cardData.getItem(key).type === 'video-text'){
+        }else if(item.type === 'video-text'){
             return this.createDetailObjectVideoText(key, detailLevel, position, offset);
-        }else if(this.cardData.getItem(key).type === 'video'){
+        }else if(item.type === 'video'){
             return this.createDetailObjectVideo(key, detailLevel, position, offset);
         }else{
-            return this.createDetailObjectText(key, detailLevel, position, offset);            
+            return this.createDetailObjectText(key, detailLevel, position, offset);
         }
     }
 
@@ -1968,6 +1983,10 @@ console.log(intersects);
         mesh.userData.cardId = key;  // メッシュの `userData` に `cardId` を格納
         mesh.userData.detailLevel = detailLevel;  // メッシュの詳細レベルを保存
 
+        if(!card){
+            return mesh;
+        }
+
         /*
         // イベントリスナーの設定
         mesh.addEventListener('mousedown', (e) => {
@@ -1988,7 +2007,7 @@ console.log(intersects);
         */
         // 詳細レベルごとのスタイル設定
         if (detailLevel === 'medium') {
-            const symbolTexture = this.createTextTexture(this.cardData.getItem(key).title);
+            const symbolTexture = this.createTextTexture(card.title);
             const symbolMaterial = new THREE.MeshBasicMaterial({
                 map: symbolTexture,
                 side: THREE.DoubleSide,
@@ -1999,7 +2018,7 @@ console.log(intersects);
             mesh.add(symbolMesh);
         } else if (detailLevel === 'high') {
 
-            const symbolTexture = this.createTextTexture(this.cardData.getItem(key).title);
+            const symbolTexture = this.createTextTexture(card.title);
             const symbolMaterial = new THREE.MeshBasicMaterial({
                 map: symbolTexture,
                 side: THREE.DoubleSide,
@@ -2011,8 +2030,8 @@ console.log(intersects);
 
             //選挙区とブロックのときのみ
 
-            if(this.cardData.getItem(key).title.slice(-1) == "区" || this.cardData.getItem(key).title.slice(-4) == "ブロック"){
-                const detailTexture = this.createTextTexture(this.cardData.getItem(key).detail.slice(0, 13), 400, 120, '28px sans-serif');
+            if(card.title.slice(-1) == "区" || card.title.slice(-4) == "ブロック"){
+                const detailTexture = this.createTextTexture(card.detail.slice(0, 13), 400, 120, '28px sans-serif');
                 const detailMaterial = new THREE.MeshBasicMaterial({
                     map: detailTexture,
                     side: THREE.DoubleSide,
@@ -2023,7 +2042,7 @@ console.log(intersects);
                 mesh.add(detailMesh);
 
 
-                const detail2texture = this.createTextTexture(this.cardData.getItem(key).detail.slice(13,26), 400, 120, '28px sans-serif');
+                const detail2texture = this.createTextTexture(card.detail.slice(13,26), 400, 120, '28px sans-serif');
                 const detail2Material = new THREE.MeshBasicMaterial({
                     map: detail2texture,
                     side: THREE.DoubleSide,
@@ -2033,7 +2052,7 @@ console.log(intersects);
                 detail2Mesh.position.set(0, -30, 0);
                 mesh.add(detail2Mesh);
 
-                const detail3texture = this.createTextTexture(this.cardData.getItem(key).detail.slice(26,39), 400, 120, '28px sans-serif');
+                const detail3texture = this.createTextTexture(card.detail.slice(26,39), 400, 120, '28px sans-serif');
                 const detail3Material = new THREE.MeshBasicMaterial({
                     map: detail3texture,
                     side: THREE.DoubleSide,
@@ -2043,7 +2062,7 @@ console.log(intersects);
                 detail3Mesh.position.set(0, -40, 0);
                 mesh.add(detail3Mesh);
 
-                const detail4texture = this.createTextTexture(this.cardData.getItem(key).detail.slice(39), 400, 120, '28px sans-serif');
+                const detail4texture = this.createTextTexture(card.detail.slice(39), 400, 120, '28px sans-serif');
                 const detail4Material = new THREE.MeshBasicMaterial({
                     map: detail4texture,
                     side: THREE.DoubleSide,
@@ -2054,9 +2073,9 @@ console.log(intersects);
                 mesh.add(detail4Mesh);
             }
             //議員カードのときのみ
-            const matsubi = this.cardData.getItem(key).detail.slice(-1);
+            const matsubi = card.detail.slice(-1);
             if(matsubi == "前" || matsubi == "元" || matsubi == "新" ){
-                const detailTexture = this.createTextTexture(this.cardData.getItem(key).detail.slice(0, -2), 400, 120, '28px sans-serif');
+                const detailTexture = this.createTextTexture(card.detail.slice(0, -2), 400, 120, '28px sans-serif');
                 const detailMaterial = new THREE.MeshBasicMaterial({
                     map: detailTexture,
                     side: THREE.DoubleSide,
@@ -2067,7 +2086,7 @@ console.log(intersects);
                 mesh.add(detailMesh);
 
 
-                const detail2texture = this.createTextTexture(this.cardData.getItem(key).detail.slice(-1) + "  " + this.cardData.getItem(key).seitou, 400, 120, '28px sans-serif');
+                const detail2texture = this.createTextTexture(card.detail.slice(-1) + "  " + card.seitou, 400, 120, '28px sans-serif');
                 const detail2Material = new THREE.MeshBasicMaterial({
                     map: detail2texture,
                     side: THREE.DoubleSide,
@@ -2077,7 +2096,7 @@ console.log(intersects);
                 detail2Mesh.position.set(0, 20, 0);
                 mesh.add(detail2Mesh);
                 //壺議員アイコン
-                const tuboInfo = this.cardData.getItem(key).tubohantei;
+                const tuboInfo = card.tubohantei;
                 if(tuboInfo !== ""){
                     const tuboTexture = this.createTextTexture(tuboInfo, 400, 120, '30px sans-serif', '#ff0000');
                     const tuboMaterial = new THREE.MeshBasicMaterial({
@@ -2090,7 +2109,7 @@ console.log(intersects);
                     mesh.add(tuboMesh);
                 }
                 //裏金議員アイコン
-                const uraganeInfo = this.cardData.getItem(key).uraganehantei;
+                const uraganeInfo = card.uraganehantei;
                 if(uraganeInfo !== ""){
                     const uraganeTexture = this.createTextTexture(uraganeInfo, 400, 120, '30px sans-serif', '#ff31ba');
                     const uraganeMaterial = new THREE.MeshBasicMaterial({
