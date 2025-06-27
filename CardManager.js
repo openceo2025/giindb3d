@@ -50,6 +50,8 @@ const PARTY_KEY_MAP = {
     "日改": "nikai",
     "無所属": "mushozoku",
     "諸派": "shoha",
+    "みんな": "mintsuku",
+    "安死": "anshi",
     "": "fumei",
     "不明": "fumei",
 };
@@ -64,27 +66,28 @@ const PARTY_COLOR_MAP = {
     kokumin: "#F8BC00",
     reiwa: "#E4027E",
     shamin: "#01A8EC",
-    nhk: "#BD0A1D",
+    nhk: "#000000",
     sansei: "#D85D0F",
-    nippo: "#8A2BE2",
-    mintsuku: "#FF7F50",
-    nkoku: "#A0522D",
-    saidou: "#20B2AA",
-    mirai: "#8F00FF",
-    nikai: "#708090",
-    nissei: "#FF6347",
-    nichiie: "#4682B4",
-    yamato: "#8B4513",
-    sabetsu: "#2E8B57",
-    kakuyu: "#9400D3",
-    genzei: "#FF69B4",
-    kunimori: "#556B2F",
-    tafu: "#DAA520",
-    kokuga: "#1E90FF",
-    shinsha: "#B22222",
-    mushozoku: "#000000",
-    shoha: "#000000",
-    fumei: "#808080",
+    nippo: "#D3D3D3",
+    mintsuku: "#F8EA0D",
+    nkoku: "#000000",
+    saidou: "#000000",
+    mirai: "#000000",
+    nikai: "#000000",
+    nissei: "#000000",
+    nichiie: "#000000",
+    yamato: "#000000",
+    sabetsu: "#000000",
+    kakuyu: "#000000",
+    genzei: "#000000",
+    kunimori: "#000000",
+    tafu: "#000000",
+    kokuga: "#000000",
+    shinsha: "#000000",
+    mushozoku: "#DFDFDF",
+    shoha: "#D3D3D3",
+    fumei: "#000000",
+    anshi: "#D3D3D3",
 };
 
 export class CardManager {
@@ -1611,6 +1614,7 @@ console.log(intersects);
         if(strId === "tafu") return true;
         if(strId === "kokuga") return true;
         if(strId === "shinsha") return true;
+        if(strId === "anshi") return true;
         if(strId === "mushozoku") return true;
         if(strId === "shoha") return true;
         if(strId === "fumei") return true;
