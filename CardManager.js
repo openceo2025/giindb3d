@@ -1693,8 +1693,12 @@ console.log(intersects);
     }
 
     // 比例代表候補を政党ごとに並べて表示する
-    showProportionalByParty(cardKeys, startX = -100, startY = 220, groupSpacing = 70, columnSpacing = 105) {
+    showProportionalByParty(cardKeys, startX = -100, startY = 220, groupSpacing = 50, columnSpacing = 105) {
         clearTimeout(this.hideCardsTimeout);
+
+        // カードを遠ざけて小さく見せる
+        const wakuZ = -590;      // 党名カードのZ座標
+        const candidateZ = -700; // 候補カードのZ座標
 
         // 政党ごとにカードIDをグループ化
         const groups = {};
@@ -1719,7 +1723,7 @@ console.log(intersects);
         this.hideAllWaku();
 
         let groupIndex = 0;
-        const candidateOffsetY = 40; // 党名カードから候補カードまでの距離
+        const candidateOffsetY = 0; // 党名カードから候補カードまでの距離をなくす
 
         for (const key of partyOrder) {
             const members = groups[key];
@@ -1729,7 +1733,7 @@ console.log(intersects);
 
             // 党名カードを配置
             this.waku[key].visible = true;
-            this.transformWaku({ wakuKey: key }, startX, baseY, 210);
+            this.transformWaku({ wakuKey: key }, startX, baseY, wakuZ);
 
             // 候補カードを横一列に配置
             members.forEach((memberKey, idx) => {
@@ -1741,7 +1745,7 @@ console.log(intersects);
                 const position = {
                     x: startX + (idx + 1) * columnSpacing,
                     y: baseY - candidateOffsetY,
-                    z: 100
+                    z: candidateZ
                 };
                 const rotation = { x: 0, y: 0, z: 0 };
                 this.animateCardTransform(memberKey, { position, rotation }, 2000, true);
