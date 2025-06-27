@@ -1937,9 +1937,12 @@ console.log(intersects);
             return new THREE.Object3D();
         }
 
-        if(item.type === 'text'){
+        // if no explicit type but children are present, treat as folder
+        const itemType = item.type || (item.childrenInfo && item.childrenInfo.cards ? 'folder' : 'text');
+
+        if(itemType === 'text'){
             return this.createDetailObjectText(key, detailLevel, position, offset);
-        }else if(item.type === 'folder'){
+        }else if(itemType === 'folder'){
             return this.createDetailObjectFolder(key, detailLevel, position, offset);
         }else if(item.type === 'img'){
             return this.createDetailObjectImg(key, detailLevel, position, offset);
@@ -2030,7 +2033,7 @@ console.log(intersects);
 
             //選挙区とブロックのときのみ
 
-            if(card.title.slice(-1) == "区" || card.title.slice(-4) == "ブロック"){
+            if(card.detail && (card.title.slice(-1) == "区" || card.title.slice(-4) == "ブロック")){
                 const detailTexture = this.createTextTexture(card.detail.slice(0, 13), 400, 120, '28px sans-serif');
                 const detailMaterial = new THREE.MeshBasicMaterial({
                     map: detailTexture,
@@ -2073,8 +2076,8 @@ console.log(intersects);
                 mesh.add(detail4Mesh);
             }
             //議員カードのときのみ
-            const matsubi = card.detail.slice(-1);
-            if(matsubi == "前" || matsubi == "元" || matsubi == "新" ){
+            const matsubi = card.detail ? card.detail.slice(-1) : "";
+            if(card.detail && (matsubi == "前" || matsubi == "元" || matsubi == "新" )){
                 const detailTexture = this.createTextTexture(card.detail.slice(0, -2), 400, 120, '28px sans-serif');
                 const detailMaterial = new THREE.MeshBasicMaterial({
                     map: detailTexture,
