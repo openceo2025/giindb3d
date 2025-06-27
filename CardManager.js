@@ -90,6 +90,11 @@ const PARTY_COLOR_MAP = {
     anshi: "#D3D3D3",
 };
 
+// Color codes used when highlighting candidates with special issues
+const TUBO_COLOR = "#ff0000";      // 統一教会関連
+const URAGANE_COLOR = "#ff31ba";   // 裏金関連
+const BOTH_COLOR = "#800080";      // 両方該当する場合
+
 export class CardManager {
     constructor(cardData) {
         this.previousKeys = [];
@@ -795,11 +800,13 @@ console.log(intersects);
                     }
                 }
             });
-        }else if(this.arrangeMode == "changeColorTsubo"){
+        }else if(this.arrangeMode == "changeColorTsubo"){ 
             Object.keys(this.cardData.items).forEach((key) => {
                 const card = this.cardData.items[key];
-                if(card && card.color && card.color.theme){
-                    this.animateColorChange(key, card.color.theme, 2000);
+                if(!card) return;
+                const issueColor = this.getIssueColor(card);
+                if(issueColor){
+                    this.animateColorChange(key, issueColor, 2000);
                 }
             });
         }
@@ -1515,6 +1522,17 @@ console.log(intersects);
     getPartyColor(name) {
         const key = this.partyKeyMap[name] || name;
         return this.partyColorMap[key];
+    }
+
+    // Determine highlight color based on tsubo/uragane information
+    getIssueColor(card) {
+        if (!card) return null;
+        const hasTubo = card.tubohantei && card.tubohantei !== "";
+        const hasUragane = card.uraganehantei && card.uraganehantei !== "";
+        if (hasTubo && hasUragane) return BOTH_COLOR;
+        if (hasUragane) return URAGANE_COLOR;
+        if (hasTubo) return TUBO_COLOR;
+        return this.getPartyColor(card.seitou);
     }
     
 
