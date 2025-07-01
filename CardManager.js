@@ -248,37 +248,48 @@ createDetailDisplayObject() {
     }
     
     // ボタンのhrefを更新するメソッド
-    updateDetailButtonLinks(urls) {
-        // 入力が文字列の場合、コンマ区切りで配列化する
-        if (typeof urls === 'string') {
-            urls = urls.split(',').map(url => url.trim());  // コンマ区切りで配列化し、各URLの前後の空白を削除
-        }
+    updateDetailButtonLinks(card) {
+        let urls = [];
 
-        const maxButtons = 10;  // ボタンは10個固定
+        if (!card) {
+            urls = [];
+        } else {
+            // tuboURLarray はカンマ区切りの文字列または配列で渡されることを想定
+            let arr = card.tuboURLarray || [];
+            if (typeof arr === 'string') {
+                arr = arr.split(',').map(u => u.trim()).filter(u => u);
+            } else if (Array.isArray(arr)) {
+                arr = arr.map(u => (u || '').trim()).filter(u => u);
+            }
+            urls = urls.concat(arr);
 
-        // 配列の長さが10より少ない場合は不足分を空文字列で埋める
-        if (urls.length < maxButtons) {
-            while (urls.length < maxButtons) {
-                urls.push("");  // 空文字列を追加
+            if (card.tuboURL && card.tuboURL.trim() !== '') {
+                urls.push(card.tuboURL.trim());
+            }
+            if (card.uraganeURL && card.uraganeURL.trim() !== '') {
+                urls.push(card.uraganeURL.trim());
             }
         }
 
-        // 配列が10より多い場合は10個に切り捨てる
+        const maxButtons = this.detailButtons.length; // 10個固定
+
+        while (urls.length < maxButtons) {
+            urls.push('');
+        }
         if (urls.length > maxButtons) {
-            urls = urls.slice(0, maxButtons);  // 先頭10個だけ残して切り捨て
+            urls = urls.slice(0, maxButtons);
         }
 
-        // ボタンのリンク更新処理
         this.detailButtons.forEach((button, index) => {
             const url = urls[index];
-            if (url === "") {
-                button.href = "#";  // 空文字列の時はデフォルトのリンクを無効化
-                button.disabled = true;  // ボタンを無効化
-                button.style.visibility = "hidden";  // ボタンを見えなくするがスペースは保持
+            if (url === '') {
+                button.href = '#';
+                button.disabled = true;
+                button.style.visibility = 'hidden';
             } else {
-                button.href = url;  // 有効なURLをセット
-                button.disabled = false;  // ボタンを有効化
-                button.style.visibility = "visible";  // ボタンを表示
+                button.href = url;
+                button.disabled = false;
+                button.style.visibility = 'visible';
             }
         });
     }
@@ -375,7 +386,7 @@ createDetailDisplayObject() {
             this.animateObjectTransform(cardObject.highDetail, {x: 0, y: 200, z: 230}, {x: 0, y: 0, z: 0}, 2000);
 
             const info = this.cardData.items[keyParam];
-            this.updateDetailButtonLinks(info.tuboURLarray);
+            this.updateDetailButtonLinks(info);
             this.changeDetailText(this.buildCandidateDetailText(info));
             this.showDetailDisplay();
         }
@@ -593,7 +604,7 @@ console.log(intersects);
                         this.hideAllWaku();
                         this.hideAllCards(cardId);
                         const cardInfo = this.cardData.items[cardId];
-                        this.updateDetailButtonLinks(cardInfo.tuboURLarray);
+                        this.updateDetailButtonLinks(cardInfo);
                         this.changeDetailText(this.buildCandidateDetailText(cardInfo));
                         this.showDetailDisplay();
                         isProcessed = true;  // フラグを立てる
