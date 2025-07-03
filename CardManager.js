@@ -17,7 +17,7 @@ const PARTY_KEY_MAP = {
     "れいわ": "reiwa",
     "社民": "shamin",
     "社会民主党": "shamin",
-    "NHK": "nhk",
+    "NHK": "nkoku",
     "参政": "sansei",
     "日保": "nippo",
     "日本保守党": "nippo",
@@ -66,7 +66,6 @@ const PARTY_COLOR_MAP = {
     kokumin: "#F8BC00",
     reiwa: "#E4027E",
     shamin: "#01A8EC",
-    nhk: "#000000",
     sansei: "#D85D0F",
     nippo: "#D3D3D3",
     mintsuku: "#F8EA0D",
@@ -1455,7 +1454,6 @@ console.log(intersects);
             kokumin: "国民民主党",
             reiwa: "れいわ新選組",
             shamin: "社会民主党",
-            nhk: "NHK党",
             sansei: "参政党",
             nippo: "日保",
             mintsuku: "みんつく",
@@ -1646,7 +1644,6 @@ console.log(intersects);
         if(strId === "kokumin") return true;
         if(strId === "reiwa") return true;
         if(strId === "shamin") return true;
-        if(strId === "nhk") return true;
         if(strId === "sansei") return true;
         if(strId === "nippo") return true;
         if(strId === "mintsuku") return true;
@@ -1730,7 +1727,7 @@ console.log(intersects);
         // 表示順は showPartyWaku と同じ
         const partyOrder = [
             "zimin", "koumei", "rikken", "ishin", "kyousan", "kokumin", "reiwa",
-            "shamin", "nhk", "sansei", "nippo", "mintsuku", "nkoku", "saidou",
+            "shamin", "sansei", "nippo", "mintsuku", "nkoku", "saidou",
             "mirai", "nikai", "nissei", "nichiie", "yamato", "sabetsu", "kakuyu",
             "genzei", "kunimori", "tafu", "kokuga", "shinsha", "mushozoku",
             "shoha", "fumei"
@@ -1846,7 +1843,6 @@ console.log(intersects);
             "kokumin",
             "reiwa",
             "shamin",
-            "nhk",
             "sansei",
             "nippo",
             "mintsuku",
