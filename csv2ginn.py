@@ -184,7 +184,9 @@ def normalize_prefecture(name: str) -> str:
         return name
     return name + "県"
 
-# Accepted political party names
+# Known political party names for color mapping.
+# Parties not listed here are still accepted and will
+# be assigned the default color.
 VALID_PARTIES = [
     "自民",
     "自由民主党",
@@ -287,8 +289,10 @@ def validate_row(row, line_num, header):
     party = row[idx.get("seitou")].strip() if "seitou" in idx else ""
     if not party:
         party = "不明"
+    # Accept any party name. If it is not in VALID_PARTIES
+    # we simply fall back to a default color later.
     if party not in VALID_PARTIES:
-        errors.append(f"unknown party '{party}'")
+        print(f"Row {line_num}: warning unknown party '{party}'")
     return errors
 
 
